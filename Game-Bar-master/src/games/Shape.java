@@ -63,7 +63,7 @@ public class Shape {
                     }
                 }
             }
-            checkLine(board);
+            int size = checkLine(board);
             board.updateBoard();
             data.timePassedFromCollision = -1;
         }
@@ -179,12 +179,13 @@ public class Shape {
         return y;
     }
 
-	void checkLine(Board board) {
+	public int checkLine(Board board) {
 	    int size = board.getBoard().length - 1;
 	
 	    for (int i = board.getBoard().length - 1; i > 0; i--) {
 	        int count = board.countBoard(this, size, i);
 	        size = board.checkForSizeDecrease(this, size, count);
 	    }
+	    return size;
 	}
 }
