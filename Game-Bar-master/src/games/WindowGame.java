@@ -12,36 +12,34 @@ public class WindowGame {
     public static final int WIDTH = 445, HEIGHT = 629;
 
     private Board board;
-    private Title title;
-    private JFrame window;
+    Tetris data = new Tetris();
 
-    public WindowGame() {
+	public WindowGame() {
 
-        window = new JFrame("Tetris");
-        window.setSize(WIDTH, HEIGHT);
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setLocationRelativeTo(null);
-        window.setResizable(false);
+        data.window = new JFrame("Tetris");
+        data.window.setSize(WIDTH, HEIGHT);
+        data.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        data.window.setLocationRelativeTo(null);
+        data.window.setResizable(false);
 
         board = new Board();
-        title = new Title(this);
+        data.title = new Title(this);
 
-        window.addKeyListener(board);
-        window.addKeyListener(title);
+        data.window.addKeyListener(board);
+        data.window.addKeyListener(data.title);
 
-        window.add(title);
+        data.window.add(data.title);
 
-        window.setVisible(true);
+        data.window.setVisible(true);
     }
 
-    public void startTetris() {
-        window.remove(title);
-        window.addMouseMotionListener(board);
-        window.addMouseListener(board);
-        window.add(board);
+    void windowListener() {
+		data.window.addMouseMotionListener(board);
+        data.window.addMouseListener(board);
+        data.window.add(board);
         board.startGame();
-        window.revalidate();
-    }
+        data.window.revalidate();
+	}
 
     public static void main(String[] args) {
         new WindowGame();

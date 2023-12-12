@@ -140,15 +140,20 @@ public class Board extends JPanel implements KeyListener, MouseListener, MouseMo
             gamePaused = !gamePaused;
         }
 
-        if (refreshBounds.contains(mouseX, mouseY) && leftClick) {
-            startGame();
-        }
-
         if (gamePaused || gameOver) {
             return;
         }
-        currentShape.update();
+        
+        checkForShapeUpdate();
     }
+
+	private void checkForShapeUpdate() {
+		if (refreshBounds.contains(mouseX, mouseY) && leftClick) {
+            startGame();
+        }
+        
+        currentShape.update();
+	}
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -256,14 +261,14 @@ public class Board extends JPanel implements KeyListener, MouseListener, MouseMo
             currentShape.setDeltaX(-1);
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            currentShape.speedUp();
+            currentShape.Speed.speedUp(currentShape);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            currentShape.speedDown();
+            currentShape.Speed.speedDown(currentShape);
         }
     }
 
@@ -346,5 +351,29 @@ public class Board extends JPanel implements KeyListener, MouseListener, MouseMo
     public void addScore() {
         score++;
     }
+
+	void updateBoard() {
+		addScore();
+		setCurrentShape();
+	}
+
+	int countBoard(Shape shape, int size, int i) {
+		int count = 0;
+		for (int j = 0; j < getBoard()[0].length; j++) {
+		    if (getBoard()[i][j] != null) {
+		        count++;
+		    }
+	
+		    getBoard()[size][j] = getBoard()[i][j];
+		}
+		return count;
+	}
+
+	int checkForSizeDecrease(Shape shape, int size, int count) {
+		if (count < getBoard()[0].length) {
+		    size--;
+		}
+		return size;
+	}
 
 }

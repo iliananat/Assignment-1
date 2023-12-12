@@ -20,14 +20,17 @@ public class Snake
 {
     public static void main(String[] args)
     {
-        JFrame obj = new JFrame("Snake Xenzia");
         snakeplay splay = new snakeplay();
+        snakeFrame(splay);
+        
+    }
+
+	private static void snakeFrame(snakeplay splay) {
+		JFrame obj = new JFrame("Snake Xenzia");
         obj.setBounds(10, 10, 905, 700);
-        obj.setBackground(Color.darkGray);
         obj.setResizable(false);
         obj.setVisible(true);
         obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         obj.add(splay);
-        
-    }
+	}
 }

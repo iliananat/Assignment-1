@@ -68,7 +68,7 @@ public class Title extends JPanel implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         if(e.getKeyChar() == KeyEvent.VK_SPACE) {
-            window.startTetris();
+            window.data.startTetris(window);
         }
     }
 
