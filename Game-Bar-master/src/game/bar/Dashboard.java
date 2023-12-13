@@ -26,6 +26,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import games.ImageLoader;
+
 public class Dashboard extends JFrame {
 
 	private JPanel contentPane;
@@ -299,9 +301,9 @@ public class Dashboard extends JFrame {
 			private JLabel heading_label;
 			private JTextArea info;
 			private JButton play_button;
+			private ImageLoader img;
 			
-			
-			public GamePanel(String image_path, String info_text, String heading_text, int type) {
+			public GamePanel(ImageLoader img, int type) {
 //				switch(type) {
 //				case 1:
 //					this.setBackground(Color.red);
@@ -320,7 +322,7 @@ public class Dashboard extends JFrame {
 				this.setBorder(overall_border_game_panel);
 				
 				this.setLayout(new GridLayout(2, 1));
-				this.image_panel = new BlankPanel(image_path, 9, 10);
+				this.image_panel = new BlankPanel(img.getImage_path(), 9, 10);
 				
 				Border inside_border_image_panel = BorderFactory.createLineBorder(theme_color, 2);
 				Border outside_border_image_panel = BorderFactory.createEmptyBorder(5, 5, 5, 5);
@@ -333,7 +335,7 @@ public class Dashboard extends JFrame {
 				
 				JPanel main_panel = new JPanel();
 				main_panel.setLayout(new BoxLayout(main_panel, BoxLayout.Y_AXIS));
-				String formatted_text_heading = String.format("<html><span style='font-size:25px'>%s</span><html>", heading_text);
+				String formatted_text_heading = String.format("<html><span style='font-size:25px'>%s</span><html>", img.getHeading_text());
 				heading_label = new JLabel(formatted_text_heading);
 				JPanel heading_encloser = new JPanel();
 //				heading_encloser.setMaximumSize(new Dimension(width/2, height/2));
@@ -344,7 +346,7 @@ public class Dashboard extends JFrame {
 				
 				JPanel info_encloser = new JPanel();
 				
-				info = new JTextArea(info_text);
+				info = new JTextArea(img.getInfo_text());
 				info.setFont(info.getFont().deriveFont(20f));
 				info.setLineWrap(true);
 				info.setWrapStyleWord(true);
@@ -384,9 +386,9 @@ public class Dashboard extends JFrame {
 		String info_text_two = "Want to destroy buildings\nby actually building them perfectly? Come here to make that possible";
 		String info_text_three = "Hawkins was right about aliens. What's done is done. Let's eliminate them and save Earth.";
 		
-		GamePanel game_one_panel = new GamePanel(image_path_one, info_text_one, "Snake Game", 1);
-		GamePanel game_two_panel = new GamePanel(image_path_two, info_text_two, "Tetris", 2);
-		GamePanel game_three_panel = new GamePanel(image_path_three, info_text_three, "Space Invaders", 3);
+		GamePanel game_one_panel = new GamePanel(new ImageLoader(image_path_one, info_text_one, "Snake Game"), 1);
+		GamePanel game_two_panel = new GamePanel(new ImageLoader(image_path_two, info_text_two, "Tetris"), 2);
+		GamePanel game_three_panel = new GamePanel(new ImageLoader(image_path_three, info_text_three, "Space Invaders"), 3);
 		
 		content_panel.add(game_one_panel);
 		content_panel.add(game_two_panel);
