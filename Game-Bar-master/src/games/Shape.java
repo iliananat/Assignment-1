@@ -11,11 +11,15 @@ import java.awt.Graphics;
 
 public class Shape {
 
-    private Color color;
+    Color color;
 
-    private int x, y;
+    int x;
 
-    private long time, lastTime;
+	int y;
+
+    long time;
+
+	long lastTime;
 
     Speed Speed = new Speed(50, 600);
 
@@ -23,13 +27,13 @@ public class Shape {
 
 	private int[][] reference;
 
-    private int deltaX;
+    int deltaX;
 
     Board board;
 
-    private boolean moveX = false;
+    boolean moveX = false;
 
-    private Collision data = new Collision(false, -1);
+    Collision data = new Collision(false, -1);
 
 	public Shape(int[][] coords, Board board, Color color) {
         this.RotateMatrix.coords = coords;
@@ -38,7 +42,7 @@ public class Shape {
         deltaX = 0;
         x = 4;
         y = 0;
-        Speed.delay = Speed.normal;
+        Speed.setDelay(Speed.getNormal());
         time = 0;
         lastTime = System.currentTimeMillis();
         reference = new int[coords.length][coords[0].length];
@@ -49,74 +53,7 @@ public class Shape {
 
     long deltaTime;
 
-    public void update() {
-        moveX = true;
-        deltaTime = System.currentTimeMillis() - lastTime;
-        time += deltaTime;
-        lastTime = System.currentTimeMillis();
-
-        if (data.checkForCollision(this)) {
-            for (int row = 0; row < RotateMatrix.coords.length; row++) {
-                for (int col = 0; col < RotateMatrix.coords[0].length; col++) {
-                    if (RotateMatrix.coords[row][col] != 0) {
-                        board.getBoard()[y + row][x + col] = color;
-                    }
-                }
-            }
-            int size = checkLine(board);
-            board.updateBoard();
-            data.timePassedFromCollision = -1;
-        }
-
-        // check moving horizontal
-        if (!(x + deltaX + RotateMatrix.coords[0].length > 10) && !(x + deltaX < 0)) {
-
-            for (int row = 0; row < RotateMatrix.coords.length; row++) {
-                for (int col = 0; col < RotateMatrix.coords[row].length; col++) {
-                    if (RotateMatrix.coords[row][col] != 0) {
-                        if (board.getBoard()[y + row][x + deltaX + col] != null) {
-                            moveX = false;
-                        }
-
-                    }
-                }
-            }
-
-            if (moveX) {
-                x += deltaX;
-            }
-
-        }
-
-        // Check position + height(number of row) of shape
-        if (data.timePassedFromCollision == -1) {
-            if (!(y + 1 + RotateMatrix.coords.length > 20)) {
-
-                for (int row = 0; row < RotateMatrix.coords.length; row++) {
-                    for (int col = 0; col < RotateMatrix.coords[row].length; col++) {
-                        if (RotateMatrix.coords[row][col] != 0) {
-
-                            if (board.getBoard()[y + 1 + row][x + col] != null) {
-                                data.collision(this);
-                            }
-                        }
-                    }
-                }
-                if (time > Speed.delay) {
-                    y++;
-                    time = 0;
-                }
-            } else {
-                data.collision(this);
-            }
-        } else {
-            data.timePassedFromCollision += deltaTime;
-        }
-
-        deltaX = 0;
-    }
-
-	public void render(Graphics g) {
+    public void render(Graphics g) {
 
         g.setColor(color);
         for (int row = 0; row < RotateMatrix.coords.length; row++) {
@@ -179,13 +116,87 @@ public class Shape {
         return y;
     }
 
-	public int checkLine(Board board) {
-	    int size = board.getBoard().length - 1;
+	public void update(Collision collision2, Collision collision) {
+	    moveX = true;
+	    deltaTime = System.currentTimeMillis() - lastTime;
+	    time += deltaTime;
+	    lastTime = System.currentTimeMillis();
 	
-	    for (int i = board.getBoard().length - 1; i > 0; i--) {
-	        int count = board.countBoard(this, size, i);
-	        size = board.checkForSizeDecrease(this, size, count);
+	    if (collision.checkForCollision(this)) {
+	        for (int row = 0; row < RotateMatrix.coords.length; row++) {
+	            for (int col = 0; col < RotateMatrix.coords[0].length; col++) {
+	                if (RotateMatrix.coords[row][col] != 0) {
+	                    board.getBoard()[y + row][x + col] = color;
+	                }
+	            }
+	        }
+	        int size = board.checkLine(this);
+	        board.updateBoard();
+	        collision.setTimePassedFromCollision(-1);
 	    }
-	    return size;
+	
+	    // check moving horizontal
+	    if (!(x + deltaX + RotateMatrix.coords[0].length > 10) && !(x + deltaX < 0)) {
+	
+	        for (int row = 0; row < RotateMatrix.coords.length; row++) {
+	            for (int col = 0; col < RotateMatrix.coords[row].length; col++) {
+	                if (RotateMatrix.coords[row][col] != 0) {
+	                    if (board.getBoard()[y + row][x + deltaX + col] != null) {
+	                        moveX = false;
+	                    }
+	
+	                }
+	            }
+	        }
+	
+	        if (moveX) {
+	            x += deltaX;
+	        }
+	
+	    }
+	
+	    // Check position + height(number of row) of shape
+	    if (collision.getTimePassedFromCollision() == -1) {
+	        if (!(y + 1 + RotateMatrix.coords.length > 20)) {
+	
+	            for (int row = 0; row < RotateMatrix.coords.length; row++) {
+	                for (int col = 0; col < RotateMatrix.coords[row].length; col++) {
+	                    if (RotateMatrix.coords[row][col] != 0) {
+	
+	                        if (board.getBoard()[y + 1 + row][x + col] != null) {
+	                            collision.collision(this);
+	                        }
+	                    }
+	                }
+	            }
+	            if (time > Speed.getDelay()) {
+	                y++;
+	                time = 0;
+	            }
+	        } else {
+	            collision.collision(this);
+	        }
+	    } else {
+	    	int temp = (int) (collision.getTimePassedFromCollision()+deltaTime);
+	        collision.setTimePassedFromCollision(temp);
+	    }
+	
+	    deltaX = 0;
+	}
+
+	public void setCurrentShape(Board board) {
+	    Board.currentShape = this;
+	    board.setNextShape();
+	
+	    for (int row = 0; row < Board.currentShape.getCoords().length; row++) {
+	        for (int col = 0; col < Board.currentShape.getCoords()[0].length; col++) {
+	            if (Board.currentShape.getCoords()[row][col] != 0) {
+	                if (board.board[Board.currentShape.getY() + row][Board.currentShape.getX() + col] != null) {
+	                    board.gameOver = true;
+	                }
+	            }
+	        }
+	    }
+	
 	}
 }

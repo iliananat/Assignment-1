@@ -1,9 +1,9 @@
 package games;
 
 public class Speed {
-	public int fast;
-	public int normal;
-	public int delay;
+	private int fast;
+	private int normal;
+	private int delay;
 
 	public Speed(int fast, int normal) {
 		this.fast = fast;
@@ -17,4 +17,17 @@ public class Speed {
 	public void speedDown(Shape shape) {
 	    delay = normal;
 	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
+	public int getNormal() {
+		return normal;
+	}
+	
 }

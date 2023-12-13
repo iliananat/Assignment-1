@@ -1,8 +1,8 @@
 package games;
 
 public class Collision {
-	public boolean collision;
-	public int timePassedFromCollision;
+	private boolean collision;
+	private int timePassedFromCollision;
 
 	public Collision(boolean collision, int timePassedFromCollision) {
 		this.collision = collision;
@@ -17,4 +17,13 @@ public class Collision {
 	    collision = true;
 	    timePassedFromCollision = 0;
 	}
+
+	public int getTimePassedFromCollision() {
+		return timePassedFromCollision;
+	}
+
+	public void setTimePassedFromCollision(int timePassedFromCollision) {
+		this.timePassedFromCollision = timePassedFromCollision;
+	}
+	
 }

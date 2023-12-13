@@ -112,32 +112,21 @@ public class snakeplay extends JPanel implements KeyListener, ActionListener
         
         for(int a=0;a<lengthofsnake;a++)
         {
-            if(a==0 && right)
-            {
-                rightmouth = new ImageIcon("rightmouth.png");
-                rightmouth.paintIcon(this, g, snakexlen[a], snakeylen[a]);
-            }
-            
-            if(a==0 && left)
-            {
-                leftmouth = new ImageIcon("leftmouth.png");
-                leftmouth.paintIcon(this, g, snakexlen[a], snakeylen[a]);
-            }
-            
-            if(a==0 && down)
-            {
-                downmouth = new ImageIcon("downmouth.png");
-                downmouth.paintIcon(this, g, snakexlen[a], snakeylen[a]);
-            }
-            
-            if(a==0 && up)
-            {
+            if(a==0) {
+            	if(right) {
+            		rightmouth = new ImageIcon("rightmouth.png");
+            		rightmouth.paintIcon(this, g, snakexlen[a], snakeylen[a]);
+            	} else if(left) {
+            		leftmouth = new ImageIcon("leftmouth.png");
+            		leftmouth.paintIcon(this, g, snakexlen[a], snakeylen[a]);
+            	}else if(down) {
+            		downmouth = new ImageIcon("downmouth.png");
+            		downmouth.paintIcon(this, g, snakexlen[a], snakeylen[a]);
+            	} else {
                 upmouth = new ImageIcon("upmouth.png");
                 upmouth.paintIcon(this, g, snakexlen[a], snakeylen[a]);
-            }
-            
-            if(a!=0)
-            {
+            	}
+            }else {
                 snakeimage = new ImageIcon("snakeimage.png");
                 snakeimage.paintIcon(this, g, snakexlen[a], snakeylen[a]);
             }

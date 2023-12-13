@@ -3,7 +3,7 @@ package games;
 import javax.swing.JFrame;
 
 public class Tetris {
-	public Title title;
+	private Title title;
 	public JFrame window;
 
 	public Tetris() {
@@ -13,4 +13,13 @@ public class Tetris {
 	    window.remove(title);
 	    windowGame.windowListener();
 	}
+
+	public Title getTitle() {
+		return title;
+	}
+
+	public void setTitle(Title title) {
+		this.title = title;
+	}
+	
 }

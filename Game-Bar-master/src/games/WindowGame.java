@@ -23,12 +23,12 @@ public class WindowGame {
         data.window.setResizable(false);
 
         board = new Board();
-        data.title = new Title(this);
+        data.setTitle(new Title(this));
 
         data.window.addKeyListener(board);
-        data.window.addKeyListener(data.title);
+        data.window.addKeyListener(data.getTitle());
 
-        data.window.add(data.title);
+        data.window.add(data.getTitle());
 
         data.window.setVisible(true);
     }
